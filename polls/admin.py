@@ -3,7 +3,17 @@ from .models import (
     Poll,
     Question,
     ChoiceAnswer,
+    Answer
 )
+
+
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'user_id',
+        'question',
+    )
 
 
 @admin.register(Poll)

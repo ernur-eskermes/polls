@@ -39,11 +39,6 @@ class Question(models.Model):
         choices=TYPE_CHOICES,
         max_length=50
     )
-    answer = models.TextField(
-        'Ответ',
-        help_text='Ответ пользователя в виде текста',
-        blank=True
-    )
     poll = models.ForeignKey(
         Poll,
         on_delete=models.CASCADE,
@@ -74,6 +69,34 @@ class ChoiceAnswer(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    class Meta:
+        verbose_name = 'Ответ для выбора'
+        verbose_name_plural = 'Ответы для выбора'
+
+
+class Answer(models.Model):
+    user_id = models.IntegerField(
+        'ID пользователя',
+    )
+    question = models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE,
+        verbose_name='Вопрос',
+    )
+    answer = models.TextField(
+        'Ответ',
+        help_text='Ответ пользователя в виде текста',
+        blank=True
+    )
+    selected_answers = models.ManyToManyField(
+        ChoiceAnswer,
+        verbose_name='Выбранные пользователем ответы',
+        blank=True
+    )
+
+    def __str__(self):
+        return str(self.user_id)
 
     class Meta:
         verbose_name = 'Ответ'
